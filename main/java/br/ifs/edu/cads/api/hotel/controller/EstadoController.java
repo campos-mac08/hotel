@@ -13,7 +13,7 @@ import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estado")
+@RequestMapping("/estados")
 public class EstadoController {
 
     private final EstadoService estadoService;
@@ -22,9 +22,21 @@ public class EstadoController {
         this.estadoService = estadoService;
     }
 
+    @GetMapping("/{sigla}")
+    public ResponseEntity<EstadoDTO> buscarPorId(@PathVariable String sigla){
+        EstadoDTO estadoDTO = estadoService.buscarPorId(sigla);
+        return ResponseEntity.ok(estadoDTO);
+    }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<EstadoDTO> buscarPorNome(@PathVariable String nome){
+        EstadoDTO estadoDTO = estadoService.buscarPorNome(nome);
+        return ResponseEntity.ok(estadoDTO);
+    }
     @GetMapping
-    public List<EstadoDTO> listar() {
-        return estadoService.listar();
+    public ResponseEntity<List<EstadoDTO>> listarTodos(){
+        List<EstadoDTO> estados = estadoService.listarTodos();
+        return ResponseEntity.ok(estados);
     }
 
     @Operation(summary = "Criar um novo estado", description = "Cria um novo estado com os dados fornecidos no corpo da requisição.")
@@ -36,8 +48,8 @@ public class EstadoController {
 
     @PostMapping
     public ResponseEntity<EstadoDTO> criar(@Valid @RequestBody EstadoDTO estadoDTO){
-        EstadoDTO estadoCriado = estadoService.salvar(estadoDTO);
-        URI location = URI.create("/api/estados/" + estadoCriado.sigla());
+        EstadoDTO estadoCriado = estadoService.criar(estadoDTO);
+        URI location = URI.create("/estados/" + estadoCriado.sigla());
         return ResponseEntity.created(location).body(estadoCriado);
     }
 
@@ -49,7 +61,7 @@ public class EstadoController {
 
     @DeleteMapping("/{sigla}")
     public ResponseEntity<Void> deletar(@PathVariable String sigla) {
-        estadoService.delete(sigla);
+        estadoService.deletar(sigla);
         return ResponseEntity.noContent().build();
     }
 }

@@ -11,7 +11,7 @@ public class Cidade {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 100)
+    @Column(name = "nome", nullable = false, length = 150)
     private String nome;
 
     @ManyToOne(fetch = FetchType.LAZY)
