@@ -28,7 +28,7 @@ public class CidadeController {
         return ResponseEntity.ok(cidadeDTO);
     }
 
-    @GetMapping("/nome/{nome}")
+    @GetMapping("/{nome}")
     public ResponseEntity<CidadeDTO> buscarPorNome(@PathVariable String nome){
         CidadeDTO cidadeDTO = cidadeService.buscarPorNome(nome);
         return ResponseEntity.ok(cidadeDTO);
@@ -40,7 +40,7 @@ public class CidadeController {
         return ResponseEntity.ok(cidades);
     }
 
-    @GetMapping("/estadoId/{sigla}")
+    @GetMapping("/estado/{sigla}")
     public ResponseEntity<List<CidadeDTO>> listarPorEstado(@PathVariable String sigla){
         List<CidadeDTO> cidadesPorEstado = cidadeService.listarPorEstado(sigla);
         return ResponseEntity.ok(cidadesPorEstado);

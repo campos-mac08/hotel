@@ -24,9 +24,9 @@ public class CidadeService {
     }
 
     public CidadeDTO toDTO(Cidade cidade){
-        String estadoId = cidade.getEstado() != null ? cidade.getEstado().getSigla() : null;
+        String sigla = cidade.getEstado() != null ? cidade.getEstado().getSigla() : null;
 
-        return new CidadeDTO(cidade.getId(), cidade.getNome(), estadoId);
+        return new CidadeDTO(cidade.getId(), cidade.getNome(), sigla);
     }
     public CidadeDTO buscarPorId(Long id){
         Cidade cidade = cidadeRepository.findById(id)
@@ -43,9 +43,9 @@ public class CidadeService {
     public List<CidadeDTO> listarTodos(){
         return cidadeRepository.findAll().stream().map(this::toDTO).toList();
     }
-    public List<CidadeDTO> listarPorEstado(String estadoId){
-        Estado estado = estadoRepository.findById(estadoId)
-                .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + estadoId));
+    public List<CidadeDTO> listarPorEstado(String sigla){
+        Estado estado = estadoRepository.findById(sigla)
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + sigla));
 
         return cidadeRepository.findByEstado(estado)
                 .stream()
@@ -57,9 +57,9 @@ public class CidadeService {
         cidade.setId(cidadeDTO.id());
         cidade.setNome(cidadeDTO.nome());
 
-        if (cidadeDTO.estadoId() != null) {
-           Estado estado = estadoRepository.findById(cidadeDTO.estadoId())
-                   .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + cidadeDTO.estadoId()));
+        if (cidadeDTO.sigla() != null) {
+           Estado estado = estadoRepository.findById(cidadeDTO.sigla())
+                   .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + cidadeDTO.sigla()));
 
            cidade.setEstado(estado);
         }
@@ -67,15 +67,19 @@ public class CidadeService {
     }
     @Transactional
     public CidadeDTO criar(CidadeDTO cidadeDTO){
-        if (cidadeRepository.existsById(cidadeDTO.id())){
+        if (cidadeDTO.id() != null && cidadeRepository.existsById(cidadeDTO.id())){
             throw new RegraDeNegocioException("Id já existe: " + cidadeDTO.id());
         }
-        if (cidadeRepository.existByNome(cidadeDTO.nome())){
-            throw new RegraDeNegocioException("Estado já existe: " + cidadeDTO.nome());
+        Estado estado = estadoRepository.findById(cidadeDTO.sigla())
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Estado não encontrado com ID: " + cidadeDTO.sigla()));
+
+        if (cidadeRepository.existsByNomeAndEstado(cidadeDTO.nome(), estado)){
+            throw new RegraDeNegocioException("Cidade já existe: " + cidadeDTO.nome()+ "/" + cidadeDTO.sigla());
         }
         Cidade cidade = fromDTO(cidadeDTO);
-        Cidade cidadeSalva = cidadeRepository.save(cidade);
-        return toDTO(cidadeSalva);
+        cidade.setEstado(estado);
+        cidadeRepository.save(cidade);
+        return toDTO(cidade);
     }
     @Transactional
     public CidadeDTO atualizar(Long id, CidadeDTO cidadeDTO){

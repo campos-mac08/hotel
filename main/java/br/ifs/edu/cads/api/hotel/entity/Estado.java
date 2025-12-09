@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Estado")
+@Table(name = "estado")
 public class Estado {
 
     @Id
@@ -16,21 +16,13 @@ public class Estado {
     @Column(name = "nome", nullable = false, length = 30)
     private String nome;
 
-    @OneToMany( mappedBy = "Estado", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
+    @OneToMany( mappedBy = "estado", fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = false)
     private List<Cidade> cidades = new ArrayList<>();
 
     public Estado() {}
 
     public Estado(String nome, String sigla) {
-        this.nome = nome;
         this.sigla = sigla;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
         this.nome = nome;
     }
 
@@ -40,6 +32,14 @@ public class Estado {
 
     public void setSigla(String sigla) {
         this.sigla = sigla;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class EstadoController {
         return ResponseEntity.ok(estadoDTO);
     }
 
-    @GetMapping("/nome/{nome}")
+    @GetMapping("/{nome}")
     public ResponseEntity<EstadoDTO> buscarPorNome(@PathVariable String nome){
         EstadoDTO estadoDTO = estadoService.buscarPorNome(nome);
         return ResponseEntity.ok(estadoDTO);

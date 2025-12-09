@@ -19,7 +19,7 @@ public class EstadoService {
     }
     private EstadoDTO toDTO(Estado estado){
 
-        return new EstadoDTO(estado.getNome(), estado.getSigla());
+        return new EstadoDTO(estado.getSigla(), estado.getNome());
     }
     public EstadoDTO buscarPorNome(String nome){
         Estado estado = estadoRepository.findByNome(nome)
@@ -44,7 +44,7 @@ public class EstadoService {
         if (estadoRepository.existsById(estadoDTO.sigla())){
             throw new RegraDeNegocioException("Sigla já existe: " + estadoDTO.sigla());
         }
-        if (estadoRepository.existByNome(estadoDTO.nome())){
+        if (estadoRepository.existsByNome(estadoDTO.nome())){
             throw new RegraDeNegocioException("Estado já existe: " + estadoDTO.nome());
         }
         Estado estado = fromDTO(estadoDTO);

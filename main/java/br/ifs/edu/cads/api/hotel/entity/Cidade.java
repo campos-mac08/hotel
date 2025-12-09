@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "Cidades")
+@Table(name = "cidade")
 public class Cidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,15 +15,14 @@ public class Cidade {
     private String nome;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "estadoId")
+    @JoinColumn(name = "estado")
     private Estado estado;
 
     public Cidade() {}
 
-    public Cidade(Long id, String nome, Estado estado) {
+    public Cidade(Long id, String nome) {
         this.id = id;
         this.nome = nome;
-        this.estado = estado;
     }
 
     public Long getId() {

@@ -9,6 +9,6 @@ public interface EstadoRepository extends JpaRepository<Estado, String> {
 
     Optional<Estado> findByNome(String nome);
 
-    boolean existByNome(String nome);
+    boolean existsByNome(String nome);
 
 }

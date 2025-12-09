@@ -12,5 +12,5 @@ public record CidadeDTO(
     @Size(max = 150, message = "O nome da cidade não pode exceder 150 caracteres!")
     String nome,
 
-    String estadoId
+    String sigla
     ){}
