@@ -2,27 +2,24 @@ package br.ifs.edu.cads.api.hotel.entity;
 
 import jakarta.persistence.*;
 
-import java.util.Objects;
-
 @Entity
-@Table(name = "Cidades")
-public class Cidade {
+@Table(name = "Comodidades")
+public class Comodidades {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nome", nullable = false, length = 50)
+    @Column(name = "Comodidade", nullable = false, length = 20)
     private String nome;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "UF")
-    private Estado estado;
+    @Column(name = "Descrição", nullable = false, length = 100)
+    private String descricao;
 
-    public Cidade() {}
-
-    public Cidade(Long id, String nome) {
+    public Comodidades(Long id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
+        this.descricao = descricao;
     }
 
     public Long getId() {
@@ -41,20 +38,20 @@ public class Cidade {
         this.nome = nome;
     }
 
-    public Estado getEstado() {
-        return estado;
+    public String getDescricao() {
+        return descricao;
     }
 
-    public void setEstado(Estado estado) {
-        this.estado = estado;
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
 
-        Cidade cidade = (Cidade) o;
-        return id.equals(cidade.id);
+        Comodidades that = (Comodidades) o;
+        return id.equals(that.id);
     }
 
     @Override
@@ -64,10 +61,10 @@ public class Cidade {
 
     @Override
     public String toString() {
-        return "Cidade{" +
+        return "Comodidades{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
-                ", estado=" + estado +
+                ", descricao='" + descricao + '\'' +
                 '}';
     }
 }
